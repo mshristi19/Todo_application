@@ -2,7 +2,9 @@ package com.example.todo_application;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +14,8 @@ import android.widget.Toast;
 
 
 import com.example.todo_application.databinding.ActivityMainBinding;
+
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -30,6 +34,19 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this,InsertDataActivity.class);
                 startActivityForResult(intent,1);
+            }
+        });
+
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerView.setHasFixedSize(true);
+
+        TodoAdaptor adaptor = new TodoAdaptor();
+        binding.recyclerView.setAdapter(adaptor);
+
+        todoViewModel.getAllTodos().observe(this, new Observer<List<Todo>>() {
+            @Override
+            public void onChanged(List<Todo> todos) {
+                adaptor.submitList(todos);
             }
         });
     }
