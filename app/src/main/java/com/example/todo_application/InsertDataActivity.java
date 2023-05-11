@@ -28,4 +28,10 @@ public class InsertDataActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(InsertDataActivity.this,MainActivity.class));
+    }
 }
