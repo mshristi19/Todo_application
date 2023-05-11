@@ -9,6 +9,7 @@ import androidx.room.Update;
 
 import java.util.List;
 
+@SuppressWarnings("ALL")
 @Dao
 public interface TodoDao {
 

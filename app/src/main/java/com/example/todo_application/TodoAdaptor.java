@@ -11,10 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.todo_application.databinding.EachItemBinding;
 
-import javax.security.auth.callback.Callback;
-
 public class TodoAdaptor extends ListAdapter<Todo,TodoAdaptor.ViewHolder> {
-    public TodoAdaptor(){
+    public TodoAdaptor(MainActivity mainActivity){
         super(CALLBACK);
     }
 

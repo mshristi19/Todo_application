@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this,InsertDataActivity.class);
+                intent.putExtra("type","addMode");
                 startActivityForResult(intent,1);
             }
         });
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setHasFixedSize(true);
 
-        TodoAdaptor adaptor = new TodoAdaptor();
+        TodoAdaptor adaptor = new TodoAdaptor(MainActivity.this);
         binding.recyclerView.setAdapter(adaptor);
 
         todoViewModel.getAllTodos().observe(this, new Observer<List<Todo>>() {
@@ -61,7 +62,18 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                todoViewModel.delete(adaptor.getTodo(viewHolder.getAdapterPosition()));
+                if(direction==ItemTouchHelper.RIGHT){
+                    todoViewModel.delete(adaptor.getTodo(viewHolder.getAdapterPosition()));
+                    Toast.makeText(MainActivity.this,"todo item deleted", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Intent intent = new Intent(MainActivity.this, InsertDataActivity.class);
+                    intent.putExtra("type","edit");
+                    intent.putExtra("title",adaptor.getTodo(viewHolder.getAdapterPosition()).getTitle());
+                    intent.putExtra("details",adaptor.getTodo(viewHolder.getAdapterPosition()).getDetails());
+                    intent.putExtra("id",adaptor.getTodo(viewHolder.getAdapterPosition()).getId());
+                    startActivityForResult(intent,2);
+                }
             }
         }).attachToRecyclerView(binding.recyclerView);
 
@@ -76,8 +88,15 @@ public class MainActivity extends AppCompatActivity {
             Todo todo = new Todo(title,details);
             todoViewModel.insert(todo);
             Toast.makeText(this,"Added to the list",Toast.LENGTH_SHORT).show();
-
-
+        }
+        else if (requestCode==2)
+        {
+            String title = data.getStringExtra("title");
+            String details = data.getStringExtra("details");
+            Todo todo = new Todo(title,details);
+            todo.setId(data.getIntExtra("id",0));
+            todoViewModel.update(todo);
+            Toast.makeText(this,"todo list updated",Toast.LENGTH_SHORT).show();
         }
     }
 }
