@@ -11,7 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.todo_application.databinding.EachItemBinding;
 
+import java.util.List;
+
 public class TodoAdaptor extends ListAdapter<Todo,TodoAdaptor.ViewHolder> {
+
+
     public TodoAdaptor(MainActivity mainActivity){
         super(CALLBACK);
     }
@@ -25,7 +29,7 @@ public class TodoAdaptor extends ListAdapter<Todo,TodoAdaptor.ViewHolder> {
         @Override
         public boolean areContentsTheSame(@NonNull Todo oldItem, @NonNull Todo newItem) {
             return oldItem.getTitle().equals(newItem.getTitle()) &&
-                    oldItem.getDetails().equals(newItem.getDetails());
+                    oldItem.getDetails().equals(newItem.getDetails()) && oldItem.getData().equals(newItem.getData());
         }
     };
     @NonNull
@@ -37,10 +41,10 @@ public class TodoAdaptor extends ListAdapter<Todo,TodoAdaptor.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
         Todo todo = getItem(position);
         holder.binding.title.setText(todo.getTitle());
         holder.binding.description.setText(todo.getDetails());
+        holder.binding.time.setText(todo.getData().toString());
     }
 
     public Todo getTodo(int position)
@@ -56,4 +60,6 @@ public class TodoAdaptor extends ListAdapter<Todo,TodoAdaptor.ViewHolder> {
 
         }
     }
+
+
 }

@@ -10,14 +10,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.Toast;
 
 
 import com.example.todo_application.databinding.ActivityMainBinding;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -75,9 +76,11 @@ public class MainActivity extends AppCompatActivity {
                     startActivityForResult(intent,2);
                 }
             }
+
         }).attachToRecyclerView(binding.recyclerView);
 
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -85,7 +88,10 @@ public class MainActivity extends AppCompatActivity {
         if(requestCode==1){
             String title = data.getStringExtra("title");
             String details = data.getStringExtra("details");
-            Todo todo = new Todo(title,details);
+            Todo todo = new Todo();
+            todo.setTitle(title);
+            todo.setDetails(details);
+            todo.setData(new Date());
             todoViewModel.insert(todo);
             Toast.makeText(this,"Added to the list",Toast.LENGTH_SHORT).show();
         }
@@ -93,9 +99,12 @@ public class MainActivity extends AppCompatActivity {
         {
             String title = data.getStringExtra("title");
             String details = data.getStringExtra("details");
-            Todo todo = new Todo(title,details);
+            Todo todo = new Todo();
+            todo.setTitle(title);
+            todo.setDetails(details);
+            todo.setData(new Date());
             todo.setId(data.getIntExtra("id",0));
-            todoViewModel.update(todo);
+            todoViewModel.edit(todo);
             Toast.makeText(this,"todo list updated",Toast.LENGTH_SHORT).show();
         }
     }

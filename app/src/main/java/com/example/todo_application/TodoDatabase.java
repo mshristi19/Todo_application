@@ -5,8 +5,10 @@ import android.content.Context;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 
-@Database(entities = Todo.class, version = 1)
+@TypeConverters({DateConverter.class})
+@Database(entities = Todo.class, version = 1,exportSchema = false)
 public abstract class TodoDatabase extends RoomDatabase {
     private static TodoDatabase instance;
     public abstract TodoDao todoDao();
@@ -15,7 +17,7 @@ public abstract class TodoDatabase extends RoomDatabase {
         if(instance==null)
         {
             instance = Room.databaseBuilder(context.getApplicationContext()
-            ,TodoDatabase.class,"todo_database").fallbackToDestructiveMigration()
+                            ,TodoDatabase.class,"todo_database").fallbackToDestructiveMigration()
                     .build();
         }
         return instance;
