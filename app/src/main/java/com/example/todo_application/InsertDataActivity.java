@@ -19,12 +19,12 @@ public class InsertDataActivity extends AppCompatActivity {
 
         String type = getIntent().getStringExtra("type");
 
+
         if (type.equals("edit")) {
             setTitle("edit");
             binding.title.setText(getIntent().getStringExtra("title"));
             binding.description.setText(getIntent().getStringExtra("details"));
             int id = getIntent().getIntExtra("id",0);
-            binding.addButton.setText("UPDATE");
             binding.addButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

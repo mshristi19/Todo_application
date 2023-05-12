@@ -16,6 +16,7 @@ public class Todo {
         this.details = details;
     }
 
+
     public String getTitle() {
         return title;
     }
